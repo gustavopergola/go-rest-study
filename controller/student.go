@@ -5,16 +5,24 @@ import (
 	"gorm.io/gorm"
 )
 
-type StudentController struct {}
+type StudentController struct {
+	DB *gorm.DB
+}
 
-func (s *StudentController) Retrieve(db *gorm.DB) (*entity.Student, error) {
+type StudentPost struct {
+	Name string `json:"name"`
+}
+
+func (s *StudentController) Retrieve(id int) (*entity.Student, error) {
 	student := entity.Student{}
-	err := db.First(&student, 1).Error
+	err := s.DB.First(&student, id).Error
 	return &student, err
 }
 
-func (s *StudentController) Create(db *gorm.DB) (*entity.Student, error) {
-	student := entity.Student{Name: "Gustavo"}
-	err := db.Create(&student).Error
+func (s *StudentController) Create(body *StudentPost) (*entity.Student, error) {
+	student := entity.Student{
+		Name: body.Name,
+	}
+	err := s.DB.Create(&student).Error
 	return &student, err
 }
