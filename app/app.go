@@ -7,6 +7,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
+	"os"
 )
 
 func SetupRoutes(app *fiber.App, db *gorm.DB) {
@@ -23,7 +24,7 @@ func Migrate(db *gorm.DB) {
 }
 
 func StartDB() *gorm.DB {
-	dsn := "host=localhost user=postgres password=mysecretpassword dbname=pipoca port=5432 sslmode=disable TimeZone=America/Sao_Paulo"
+	dsn := os.Getenv("DATABASE_DSN")
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("failed to connect database, error: %s", err.Error())
