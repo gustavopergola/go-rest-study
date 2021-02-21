@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gustavopergola/go-rest-study/entity"
 	"github.com/gustavopergola/go-rest-study/handler"
 	"gorm.io/driver/postgres"
@@ -37,6 +38,11 @@ func StartServer(db *gorm.DB){
 
 	SetupRoutes(app, db)
 	err := app.Listen(":" + os.Getenv("PORT"))
+
+	app.Use(favicon.New(favicon.Config{
+		File: "./favicon.ico",
+	}))
+
 	if err != nil {
 		log.Fatalf("Error binding port! Maybe already in use?")
 	}
