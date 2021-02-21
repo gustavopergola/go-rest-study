@@ -36,7 +36,7 @@ func StartServer(db *gorm.DB){
 	app := fiber.New()
 
 	SetupRoutes(app, db)
-	err := app.Listen(":8000")
+	err := app.Listen(":" + os.Getenv("PORT"))
 	if err != nil {
 		log.Fatalf("Error binding port! Maybe already in use?")
 	}
