@@ -36,12 +36,12 @@ func StartDB() *gorm.DB {
 func StartServer(db *gorm.DB){
 	app := fiber.New()
 
+	app.Use(favicon.New(favicon.Config{
+		File: "/Users/gpergola/files/pessoal/go-rest-study/app/favicon.ico",
+	}))
+
 	SetupRoutes(app, db)
 	err := app.Listen(":" + os.Getenv("PORT"))
-
-	app.Use(favicon.New(favicon.Config{
-		File: "./favicon.ico",
-	}))
 
 	if err != nil {
 		log.Fatalf("Error binding port! Maybe already in use?")
